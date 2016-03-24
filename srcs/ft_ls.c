@@ -6,50 +6,38 @@
 /*   By: rbaran <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/17 11:28:39 by rbaran            #+#    #+#             */
-/*   Updated: 2016/03/18 15:48:23 by rbaran           ###   ########.fr       */
+/*   Updated: 2016/03/24 11:26:33 by rbaran           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <ft_ls.h>
 #include <stdio.h>
 
-static void			ft_printtypeoffile(t_entry *entry)
+static void			ft_print_ls(t_entry *entry, unsigned char params)
 {
-	if (S_ISBLK(entry->stats.st_mode))
-		printf("b\t");
-	else if (S_ISCHR(entry->stats.st_mode))
-		printf("c\t");
-	else if (S_ISFIFO(entry->stats.st_mode))
-		printf("s\t");
-	else if (S_ISREG(entry->stats.st_mode))
-		printf("-\t");
-	else if (S_ISDIR(entry->stats.st_mode))
-		printf("d\t");
-	else if (S_ISLNK(entry->stats.st_mode))
-		printf("l\t");
-	else if (S_ISSOCK(entry->stats.st_mode))
-		printf("s\t");
+	if ((CHECK_BIT(params, PARAM_A_POS) && entry->name[0] == '.') ||
+			entry->name[0] != '.')
+	{
+		if (CHECK_BIT(params, PARAM_L_POS))
+			ft_printl(entry);
+		else
+			ft_putstr(entry->name);
+		ft_putchar('\n');
+	}
 }
 
-void			ft_ls(char **paths, unsigned char params)
+void				ft_ls(char **paths, unsigned char params)
 {
-	t_entry	*entrys;
+	t_entry	*entries;
 
-	if ((entrys = ft_fillentry(paths)))
+	if ((entries = ft_fillentry(paths)))
 	{
-		while (entrys)
+		entries = ft_sortentry(entries, 0);
+		entries = ft_sortentry(entries, 1);
+		while (entries)
 		{
-			if (CHECK_BIT(params, PARAM_L_POS))
-				ft_printtypeoffile(entrys);
-			if (entrys->file)
-			{
-				if (entrys->error != 0)
-					printf("TEST\n");
-				printf("%s\n", entrys->file->d_name);
-			}
-			else
-				printf("%s\n", entrys->path);
-			entrys = entrys->next;
+			ft_print_ls(entries, params);
+			entries = entries->next;
 		}
 	}
 }
