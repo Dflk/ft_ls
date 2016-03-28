@@ -6,7 +6,7 @@
 /*   By: rbaran <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/17 13:56:08 by rbaran            #+#    #+#             */
-/*   Updated: 2016/03/24 14:15:21 by rbaran           ###   ########.fr       */
+/*   Updated: 2016/03/27 20:01:00 by rbaran           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,11 +19,12 @@ static t_entry	*ft_addentry(struct dirent *readfile, char *path)
 
 	if ((entry = (t_entry*)ft_memalloc(sizeof(t_entry))))
 	{
+		entry->dir = 0;
 		if (readfile)
 		{
-			entry->path = ft_strsj(path, readfile->d_name, readfile->d_namlen);
+			entry->path = ft_strsj(path, readfile->d_name, 256);
 			entry->name = readfile->d_name;
-			entry->name[readfile->d_namlen] = '\0';
+			entry->dir = 1;
 		}
 		else
 		{

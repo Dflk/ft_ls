@@ -6,7 +6,7 @@
 /*   By: rbaran <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/16 10:00:56 by rbaran            #+#    #+#             */
-/*   Updated: 2016/03/24 15:39:04 by rbaran           ###   ########.fr       */
+/*   Updated: 2016/03/27 22:23:01 by rbaran           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,13 +16,14 @@
 # include <sys/types.h>
 # include <pwd.h>
 # include <grp.h>
-# include <uuid/uuid.h>
+//# include <uuid/uuid.h>
 # include <errno.h>
 # include <sys/stat.h>
 # include <stdio.h>
 # include <stdlib.h>
 # include <sys/types.h>
 # include <libft.h>
+# include <time.h>
 
 /*
 ** Check parameters [altRr]
@@ -65,6 +66,7 @@ typedef struct	s_entry
 	char			*path;
 	char			*name;
 	int				error;
+	int				dir;
 	struct s_entry	*next;
 }				t_entry;
 
@@ -83,7 +85,7 @@ char			**ft_parseargs(int argc, char **argv);
 ** Print entries
 ** ft_printl is only for the -l parameter
 */
-void			ft_printl(t_entry *entry);
+void			ft_printl(t_entry *entry, size_t *spaces);
 void			ft_ls(char **paths, unsigned char params);
 
 /*
@@ -92,8 +94,11 @@ void			ft_ls(char **paths, unsigned char params);
 t_entry			*ft_fillentry(char **paths);
 char			*ft_strsj(char *path, char *name, unsigned int size_name);
 t_entry			*ft_sortentry(t_entry *entries, int flag);
+t_entry			*ft_sortentry_dir(t_entry *entries);
 t_entry			*ft_lastentry(t_entry *entries, t_entry *limit);
 t_entry			*ft_findmax_name(t_entry *entries, t_entry *limit);
 t_entry			*ft_findmax_path(t_entry *entries, t_entry *limit);
+size_t			*ft_countspace(t_entry *entries);
+size_t			ft_countnb(unsigned int nb);
 
 #endif

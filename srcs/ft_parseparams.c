@@ -6,7 +6,7 @@
 /*   By: rbaran <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/16 12:54:47 by rbaran            #+#    #+#             */
-/*   Updated: 2016/03/17 11:39:28 by rbaran           ###   ########.fr       */
+/*   Updated: 2016/03/26 11:22:31 by rbaran           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,18 +41,14 @@ unsigned char			ft_parseparams(int argc, char **argv)
 {
 	int				i;
 	unsigned char	params;
-	int				res;
 
 	i = 0;
 	params = 0;
 	while (++i < argc && ft_strcmp(argv[i], "--") != 0)
-	{
-		res = 0;
 		if (ft_strncmp(argv[i], "-", 1) == 0)
 		{
 			params = ft_checkparam(argv[i], params);
 			argv[i] = NULL;
 		}
-	}
 	return (params);
 }
