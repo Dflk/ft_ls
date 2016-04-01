@@ -6,7 +6,7 @@
 /*   By: rbaran <rbaran@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/11 21:06:30 by rbaran            #+#    #+#             */
-/*   Updated: 2016/03/15 10:14:29 by rbaran           ###   ########.fr       */
+/*   Updated: 2016/03/30 11:41:35 by rbaran           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,5 @@
 
 void	ft_putstr_fd(char const *s, int fd)
 {
-	if (s)
-		while (*s)
-			ft_putchar_fd(*s++, fd);
+	write(fd, s, ft_strlen(s));
 }

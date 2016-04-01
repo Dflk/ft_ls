@@ -6,7 +6,7 @@
 /*   By: rbaran <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/18 09:47:34 by rbaran            #+#    #+#             */
-/*   Updated: 2016/03/18 10:10:26 by rbaran           ###   ########.fr       */
+/*   Updated: 2016/04/01 15:40:32 by rbaran           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,10 +35,11 @@ static void	ft_fillpaths(char **paths, int argc, char **argv)
 	while (++i < argc)
 		if (argv[i] && ft_strcmp(argv[i], "--") != 0)
 		{
-			paths[i2] = ft_strdup(argv[i]);
+			paths[i2] = argv[i];
 			i2++;
 		}
 	paths[i2] = NULL;
+	ft_sortpaths(paths);
 }
 
 char		**ft_parseargs(int argc, char **argv)

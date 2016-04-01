@@ -6,7 +6,7 @@
 /*   By: rbaran <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/16 10:00:56 by rbaran            #+#    #+#             */
-/*   Updated: 2016/03/27 22:23:01 by rbaran           ###   ########.fr       */
+/*   Updated: 2016/04/01 16:14:17 by rbaran           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 # include <sys/types.h>
 # include <pwd.h>
 # include <grp.h>
-//# include <uuid/uuid.h>
+# include <uuid/uuid.h>
 # include <errno.h>
 # include <sys/stat.h>
 # include <stdio.h>
@@ -38,6 +38,12 @@
 ** Error type
 */
 # define USAGE 255
+
+/*
+** Flag countspaces
+*/
+# define RESET 0
+# define SET 1
 
 /*
 ** Binary mask (used for parameters)
@@ -67,19 +73,22 @@ typedef struct	s_entry
 	char			*name;
 	int				error;
 	int				dir;
+	struct stat		stats;
+	struct s_entry	*files;
 	struct s_entry	*next;
 }				t_entry;
 
 /*
 ** Print error
 */
-void			ft_error(int flag, int exit);
+void			ft_error(int flag, int exit, char *str);
 
 /*
 ** Parse params/arguments
 */
 unsigned char	ft_parseparams(int argc, char **argv);
 char			**ft_parseargs(int argc, char **argv);
+void			ft_sortpaths(char **paths);
 
 /*
 ** Print entries
@@ -87,18 +96,19 @@ char			**ft_parseargs(int argc, char **argv);
 */
 void			ft_printl(t_entry *entry, size_t *spaces);
 void			ft_ls(char **paths, unsigned char params);
+void			ft_puttotal(t_entry *entries);
 
 /*
 ** Manage entries
 */
 t_entry			*ft_fillentry(char **paths);
-char			*ft_strsj(char *path, char *name, unsigned int size_name);
-t_entry			*ft_sortentry(t_entry *entries, int flag);
+char			*ft_strsj(char *path, char *name);
+t_entry			*ft_sortentry(t_entry *entries);
 t_entry			*ft_sortentry_dir(t_entry *entries);
 t_entry			*ft_lastentry(t_entry *entries, t_entry *limit);
 t_entry			*ft_findmax_name(t_entry *entries, t_entry *limit);
-t_entry			*ft_findmax_path(t_entry *entries, t_entry *limit);
-size_t			*ft_countspace(t_entry *entries);
-size_t			ft_countnb(unsigned int nb);
+int				ft_countlst(t_entry *entries);
+size_t			*ft_countspace(t_entry *entries, int flag);
+size_t			ft_countnb(long int nb);
 
 #endif

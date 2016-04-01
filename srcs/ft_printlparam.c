@@ -6,12 +6,11 @@
 /*   By: rbaran <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/24 11:17:01 by rbaran            #+#    #+#             */
-/*   Updated: 2016/03/27 19:27:30 by rbaran           ###   ########.fr       */
+/*   Updated: 2016/04/01 13:56:58 by rbaran           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <ft_ls.h>
-#include <stdio.h>
 
 static char		ft_printtypeoffile(struct stat stats)
 {
@@ -48,11 +47,8 @@ static void		ft_printpermissions(struct stat stats)
 	ft_putchar(ISXOTH(stats.st_mode) ? 'x' : '-');
 }
 
-static void		ft_putspaces(void *content, size_t spaces, int flag)
+static void		ft_putspaces(size_t i, size_t spaces)
 {
-	size_t	i;
-
-	i = (flag) ? ft_countnb(*((int*)content)) : ft_strlen((char*)content);
 	while (i++ < spaces)
 		ft_putchar(' ');
 }
@@ -68,25 +64,31 @@ static void		ft_puttime(time_t *t)
 
 void			ft_printl(t_entry *entry, size_t *spaces)
 {
-	struct stat	stats;
+	char		buf[256];
+	ssize_t		len;
 
-	stat(entry->path, &stats);
-	ft_putchar(ft_printtypeoffile(stats));
-	ft_printpermissions(stats);
+	ft_putchar(ft_printtypeoffile(entry->stats));
+	ft_printpermissions(entry->stats);
 	ft_putchar(' ');
-	ft_putspaces(&(stats.st_nlink), spaces[0], 1);
-	ft_putnbr(stats.st_nlink);
+	ft_putspaces(ft_countnb(entry->stats.st_nlink), spaces[0]);
+	ft_putnbr(entry->stats.st_nlink);
 	ft_putchar(' ');
-	ft_putstr(getpwuid(stats.st_uid)->pw_name);
+	ft_putstr(getpwuid(entry->stats.st_uid)->pw_name);
 	ft_putchar(' ');
-	ft_putspaces(&(getpwuid(stats.st_uid)->pw_name), spaces[1], 0);
-	ft_putstr(getgrgid(stats.st_gid)->gr_name);
-	ft_putspaces(&(getgrgid(stats.st_gid)->gr_name), spaces[2], 0);
+	ft_putspaces(ft_strlen((getpwuid(entry->stats.st_uid)->pw_name)), spaces[1]);
+	ft_putstr(getgrgid(entry->stats.st_gid)->gr_name);
+	ft_putspaces(ft_strlen((getgrgid(entry->stats.st_gid)->gr_name)), spaces[2]);
 	ft_putchar(' ');
-	ft_putspaces(&(stats.st_size), spaces[3], 1);
-	ft_putnbr(stats.st_size);
+	ft_putspaces(ft_countnb(entry->stats.st_size), spaces[3]);
+	ft_putnbr(entry->stats.st_size);
 	ft_putchar(' ');
-	ft_puttime(&(stats.st_mtime));
+	ft_puttime(&(entry->stats.st_mtime));
 	ft_putchar(' ');
 	ft_putstr(entry->name);
+	if ((len = readlink(entry->path, (char*)buf, 256)) != -1)
+	{
+		ft_putstr(" -> ");
+		buf[len] = '\0';
+		ft_putstr((char*)buf);
+	}
 }

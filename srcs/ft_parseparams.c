@@ -6,7 +6,7 @@
 /*   By: rbaran <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/16 12:54:47 by rbaran            #+#    #+#             */
-/*   Updated: 2016/03/26 11:22:31 by rbaran           ###   ########.fr       */
+/*   Updated: 2016/03/30 12:10:33 by rbaran           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ static unsigned char	ft_checkparam(char *arg, unsigned char params)
 	{
 		if (arg[i] != 'R' && arg[i] != 'r' && arg[i] != 'a' && arg[i] != 'l'
 				&& arg[i] != 't')
-			ft_error(USAGE, 1);
+			ft_error(USAGE, 1, NULL);
 		if (arg[i] == 'R' && !CHECK_BIT(params, PARAM_R_MAX_POS))
 			params += 1 << PARAM_R_MAX_POS;
 		else if (arg[i] == 'r' && !CHECK_BIT(params, PARAM_R_MIN_POS))

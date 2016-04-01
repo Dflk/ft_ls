@@ -6,7 +6,7 @@
 /*   By: rbaran <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/22 15:55:44 by rbaran            #+#    #+#             */
-/*   Updated: 2016/03/27 20:06:13 by rbaran           ###   ########.fr       */
+/*   Updated: 2016/03/29 18:34:48 by rbaran           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,16 +34,15 @@ t_entry	*ft_findmax_name(t_entry *entries, t_entry *limit)
 	return (max);
 }
 
-t_entry	*ft_findmax_path(t_entry *entries, t_entry *limit)
+int		ft_countlst(t_entry *entries)
 {
-	t_entry	*max;
+	int		i;
 
-	max = entries;
-	while (entries != limit)
+	i = 0;
+	while (entries)
 	{
-		if (ft_strcmp(entries->path, max->path) > 0)
-			max = entries;
 		entries = entries->next;
+		i++;
 	}
-	return (max);
+	return (i);
 }

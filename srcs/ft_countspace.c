@@ -6,13 +6,13 @@
 /*   By: rbaran <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/24 16:19:36 by rbaran            #+#    #+#             */
-/*   Updated: 2016/03/27 19:02:36 by rbaran           ###   ########.fr       */
+/*   Updated: 2016/04/01 16:30:29 by rbaran           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <ft_ls.h>
 
-size_t		ft_countnb(unsigned int nb)
+size_t		ft_countnb(long int nb)
 {
 	size_t	res;
 
@@ -28,24 +28,31 @@ size_t		ft_countnb(unsigned int nb)
 	return (res);
 }
 
-size_t		*ft_countspace(t_entry *entries)
+static void		ft_checkspaces(t_entry *entries, size_t spaces[5])
 {
-	struct stat		stats;
-	static size_t	spaces[5] = {0, 0, 0, 0, 0};
 	size_t			nb;
 
-	while (entries)
-	{
-		stat(entries->path, &stats);
-		if ((nb = ft_countnb(stats.st_nlink)) > spaces[0])
-			spaces[0] = nb;
-		if ((nb = ft_strlen(getpwuid(stats.st_uid)->pw_name)) > spaces[1])
-			spaces[1] = nb;
-		if ((nb = ft_strlen(getgrgid(stats.st_gid)->gr_name)) > spaces[2])
-			spaces[2] = nb;
-		if ((nb = ft_countnb(stats.st_size)) > spaces[3])
-			spaces[3] = nb;
-		entries = entries->next;
-	}
+	if ((nb = ft_countnb(entries->stats.st_nlink)) > spaces[0])
+		spaces[0] = nb;
+	if ((nb = ft_strlen(getpwuid(entries->stats.st_uid)->pw_name)) > spaces[1])
+		spaces[1] = nb;
+	if ((nb = ft_strlen(getgrgid(entries->stats.st_gid)->gr_name)) > spaces[2])
+		spaces[2] = nb;
+	if ((nb = ft_countnb(entries->stats.st_size)) > spaces[3])
+		spaces[3] = nb;
+}
+
+size_t		*ft_countspace(t_entry *entries, int flag)
+{
+	static size_t	spaces[5] = {0, 0, 0, 0, 0};
+
+	if (flag == SET)
+		while (entries)
+		{
+			ft_checkspaces(entries, spaces);
+			entries = entries->next;
+		}
+	else
+		ft_bzero(spaces, sizeof(spaces));
 	return ((size_t*)spaces);
 }
