@@ -1,34 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_manageentries.c                                 :+:      :+:    :+:   */
+/*   ft_cmp.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rbaran <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/03/22 15:55:44 by rbaran            #+#    #+#             */
-/*   Updated: 2016/04/06 18:06:43 by rbaran           ###   ########.fr       */
+/*   Created: 2016/04/05 14:01:53 by rbaran            #+#    #+#             */
+/*   Updated: 2016/04/05 16:06:35 by rbaran           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <ft_ls.h>
 
-t_entry	*ft_lastentry(t_entry *entries, t_entry *limit)
+int	ft_order_byname(t_entry *a, t_entry *b)
 {
-	if (entries != limit)
-		while (entries->next != limit)
-			entries = entries->next;
-	return (entries);
+	return (ft_strcmp(a->name, b->name) < 0);
 }
 
-int		ft_countlst(t_entry *entries)
+int	ft_order_bytime(t_entry *a, t_entry *b)
 {
-	int		i;
-
-	i = 0;
-	while (entries)
-	{
-		entries = entries->next;
-		i++;
-	}
-	return (i);
+	return (b->stats.st_mtimespec.tv_sec <= a->stats.st_mtimespec.tv_sec);
 }

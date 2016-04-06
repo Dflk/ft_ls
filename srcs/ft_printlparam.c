@@ -6,7 +6,7 @@
 /*   By: rbaran <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/24 11:17:01 by rbaran            #+#    #+#             */
-/*   Updated: 2016/04/01 13:56:58 by rbaran           ###   ########.fr       */
+/*   Updated: 2016/04/06 18:07:16 by rbaran           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,11 +73,25 @@ void			ft_printl(t_entry *entry, size_t *spaces)
 	ft_putspaces(ft_countnb(entry->stats.st_nlink), spaces[0]);
 	ft_putnbr(entry->stats.st_nlink);
 	ft_putchar(' ');
-	ft_putstr(getpwuid(entry->stats.st_uid)->pw_name);
+	if (getpwuid(entry->stats.st_uid))
+		ft_putstr(getpwuid(entry->stats.st_uid)->pw_name);
+	else
+		ft_putnbr(entry->stats.st_uid);
 	ft_putchar(' ');
-	ft_putspaces(ft_strlen((getpwuid(entry->stats.st_uid)->pw_name)), spaces[1]);
-	ft_putstr(getgrgid(entry->stats.st_gid)->gr_name);
-	ft_putspaces(ft_strlen((getgrgid(entry->stats.st_gid)->gr_name)), spaces[2]);
+	if (getpwuid(entry->stats.st_uid))
+		ft_putspaces(ft_strlen((getpwuid(entry->stats.st_uid)->pw_name)), spaces[1]);
+	else
+		ft_putspaces(ft_countnb(entry->stats.st_uid), spaces[1]);
+	if (getgrgid(entry->stats.st_gid))
+	{
+		ft_putstr(getgrgid(entry->stats.st_gid)->gr_name);
+		ft_putspaces(ft_strlen((getgrgid(entry->stats.st_gid)->gr_name)), spaces[2]);
+	}
+	else
+	{
+		ft_putnbr(entry->stats.st_gid);
+		ft_putspaces(ft_countnb(entry->stats.st_gid), spaces[2]);
+	}
 	ft_putchar(' ');
 	ft_putspaces(ft_countnb(entry->stats.st_size), spaces[3]);
 	ft_putnbr(entry->stats.st_size);

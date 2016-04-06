@@ -6,7 +6,7 @@
 /*   By: rbaran <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/17 13:56:08 by rbaran            #+#    #+#             */
-/*   Updated: 2016/04/01 15:30:46 by rbaran           ###   ########.fr       */
+/*   Updated: 2016/04/06 18:06:23 by rbaran           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ static t_entry	*ft_addentryfile(struct dirent *readfile, char *path)
 	return (entry);
 }
 
-static void		ft_readdir(t_entry *entry, DIR *opendirectory)
+static void		ft_readdir(t_entry *entry, DIR *opendirectory, unsigned char p)
 {
 	struct dirent	*readfile;
 	t_entry			*entry_buf;
@@ -48,10 +48,14 @@ static void		ft_readdir(t_entry *entry, DIR *opendirectory)
 		}
 	}
 	if (entry->files)
-		entry->files = ft_sortentry(entry->files);
+	{
+		merge_sort(&(entry->files), &ft_order_byname);
+		if (CHECK_BIT(p, PARAM_T_POS))
+			merge_sort(&(entry->files), &ft_order_bytime);
+	}
 }
 
-static int		ft_opendir(t_entry *entry)
+static int		ft_opendir(t_entry *entry, unsigned char params)
 {
 	DIR		*opendirectory;
 	int		error;
@@ -59,7 +63,7 @@ static int		ft_opendir(t_entry *entry)
 	error = 0;
 	if ((opendirectory = opendir(entry->path)))
 	{
-		ft_readdir(entry, opendirectory);
+		ft_readdir(entry, opendirectory, params);
 		closedir(opendirectory);
 	}
 	else
@@ -68,7 +72,7 @@ static int		ft_opendir(t_entry *entry)
 	return (error);
 }
 
-static t_entry	*ft_addentry(char *path)
+static t_entry	*ft_addentry(char *path, unsigned char params)
 {
 	t_entry		*entry;
 
@@ -81,13 +85,13 @@ static t_entry	*ft_addentry(char *path)
 		entry->files = NULL;
 		entry->dir = 0;
 		if (errno == 0 && S_ISDIR(entry->stats.st_mode))
-			entry->error = ft_opendir(entry);
+			entry->error = ft_opendir(entry, params);
 		entry->next = NULL;
 	}
 	return (entry);
 }
 
-t_entry			*ft_fillentry(char **paths)
+t_entry			*ft_fillentry(char **paths, unsigned char params)
 {
 	t_entry		*entry_begin;
 	t_entry		*entry;
@@ -100,12 +104,12 @@ t_entry			*ft_fillentry(char **paths)
 		errno = 0;
 		if (!entry_begin)
 		{
-			entry_begin = ft_addentry(paths[i]);
+			entry_begin = ft_addentry(paths[i], params);
 			entry = entry_begin;
 		}
 		else
 		{
-			entry->next = ft_addentry(paths[i]);
+			entry->next = ft_addentry(paths[i], params);
 			entry = entry->next;
 		}
 		i++;

@@ -6,6 +6,7 @@
 /*   By: rbaran <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/16 10:00:56 by rbaran            #+#    #+#             */
+/*   Updated: 2016/04/06 18:08:50 by rbaran           ###   ########.fr       */
 /*   Updated: 2016/04/01 16:14:17 by rbaran           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
@@ -16,6 +17,9 @@
 # include <sys/types.h>
 # include <pwd.h>
 # include <grp.h>
+# ifdef __APPLE__
+#  include <uuid/uuid.h>
+# endif
 # include <uuid/uuid.h>
 # include <errno.h>
 # include <sys/stat.h>
@@ -33,6 +37,12 @@
 # define PARAM_T_POS 3
 # define PARAM_R_MAX_POS 4
 # define PARAM_R_MIN_POS 5
+
+/*
+** Binary mask (major/minor)
+*/
+# define MAJOR(ST_RDEV) ((ST_RDEV >> 24) & 0xff)
+# define MINOR(ST_RDEV) (ST_RDEV & 0xff)
 
 /*
 ** Error type
@@ -99,15 +109,20 @@ void			ft_ls(char **paths, unsigned char params);
 void			ft_puttotal(t_entry *entries);
 
 /*
+** Sort
+*/
+int				ft_order_byname(t_entry *a, t_entry *b);
+int				ft_order_bytime(t_entry *a, t_entry *b);
+
+/*
 ** Manage entries
 */
-t_entry			*ft_fillentry(char **paths);
-char			*ft_strsj(char *path, char *name);
-t_entry			*ft_sortentry(t_entry *entries);
-t_entry			*ft_sortentry_dir(t_entry *entries);
-t_entry			*ft_lastentry(t_entry *entries, t_entry *limit);
-t_entry			*ft_findmax_name(t_entry *entries, t_entry *limit);
+t_entry			*ft_fillentry(char **paths, unsigned char params);
 int				ft_countlst(t_entry *entries);
+void			ft_sortentries(t_entry **entries, unsigned char params);
+char			*ft_strsj(char *path, char *name);
+void			merge_sort(t_entry **head_ref, int (*f)(t_entry*, t_entry*));
+t_entry			*ft_lastentry(t_entry *entries, t_entry *limit);
 size_t			*ft_countspace(t_entry *entries, int flag);
 size_t			ft_countnb(long int nb);
 

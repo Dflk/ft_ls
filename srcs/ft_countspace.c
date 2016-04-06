@@ -6,7 +6,7 @@
 /*   By: rbaran <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/24 16:19:36 by rbaran            #+#    #+#             */
-/*   Updated: 2016/04/01 16:30:29 by rbaran           ###   ########.fr       */
+/*   Updated: 2016/04/06 18:06:16 by rbaran           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,36 @@ size_t		ft_countnb(long int nb)
 static void		ft_checkspaces(t_entry *entries, size_t spaces[5])
 {
 	size_t			nb;
+	struct passwd	*name;
+	struct group	*grp;
 
+	spaces[0] = (nb = ft_countnb(entries->stats.st_nlink)) > spaces[0] ? nb : spaces[0];
+	if ((name = getpwuid(entries->stats.st_uid)))
+	{
+		if ((nb = ft_strlen(name->pw_name) > spaces[1]))
+			spaces[1] = nb;
+	}
+	else if ((nb = ft_countnb(entries->stats.st_uid)) > spaces[1])
+		spaces[1] = nb;
+	if ((grp = getgrgid(entries->stats.st_gid)))
+	{
+		if ((nb = ft_strlen(grp->gr_name) > spaces[2]))
+			spaces[2] = nb;
+	}
+	else if ((nb = ft_countnb(entries->stats.st_gid)) > spaces[2])
+		spaces[2] = nb;
+	if (!S_ISCHR(entries->stats.st_mode) && !S_ISBLK(entries->stats.st_mode))
+	{
+		if ((nb = ft_countnb(entries->stats.st_size)) > spaces[3])
+			spaces[3] = nb;
+	}
+	else
+	{
+		if ((nb = ft_countnb(MAJOR(entries->stats.st_rdev))) > spaces[3])
+			spaces[3] = nb;
+		if ((nb = ft_countnb(MINOR(entries->stats.st_rdev))) > spaces[4])
+			spaces[4] = nb;
+	}
 	if ((nb = ft_countnb(entries->stats.st_nlink)) > spaces[0])
 		spaces[0] = nb;
 	if ((nb = ft_strlen(getpwuid(entries->stats.st_uid)->pw_name)) > spaces[1])

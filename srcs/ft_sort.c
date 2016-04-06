@@ -6,68 +6,60 @@
 /*   By: rbaran <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/22 15:02:28 by rbaran            #+#    #+#             */
-/*   Updated: 2016/03/30 12:54:10 by rbaran           ###   ########.fr       */
+/*   Updated: 2016/04/06 18:05:50 by rbaran           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <ft_ls.h>
 
-t_entry			*ft_sortentry(t_entry *begin_entries)
+static t_entry	*ft_sortentry_dir(t_entry *begin_entries, t_entry **entries)
 {
-	t_entry	*turtle_entry;
-	t_entry	*entries;
-	t_entry	*max;
-	t_entry	*limit;
+	t_entry	*entries_buf;
+	t_entry	*entries_buf2;
 
-	limit = NULL;
-	while (ft_lastentry(begin_entries, limit) != begin_entries)
+	if ((*entries)->dir)
 	{
-		entries = ft_lastentry(begin_entries, limit);
-		max = ft_findmax_name(begin_entries, limit);
-		turtle_entry = ft_lastentry(begin_entries, max);
-		if (max == begin_entries)
+		if (begin_entries == *entries)
+		{
+			entries_buf = begin_entries;
 			begin_entries = begin_entries->next;
-		else if (max->next != limit)
-			turtle_entry->next = max->next;
-		max->next = entries->next;
-		if (max != entries)
-			entries->next = max;
-		limit = max;
+			*entries = begin_entries;
+		}
+		else
+		{
+			entries_buf = ft_lastentry(begin_entries, *entries);
+			entries_buf2 = entries_buf;
+			entries_buf->next = (*entries)->next;
+			entries_buf = *entries;
+			*entries = entries_buf2;
+		}
+		ft_lastentry(begin_entries, NULL)->next = entries_buf;
+		entries_buf->next = NULL;
 	}
+	else
+		(*entries) = (*entries)->next;
 	return (begin_entries);
 }
 
-
-t_entry			*ft_sortentry_dir(t_entry *begin_entries)
+void			ft_sortentries(t_entry **entries, unsigned char params)
 {
-	t_entry	*entries;
-	t_entry	*entries_buf;
-	size_t	len;
-	size_t	i;
+	int		len;
+	int		i;
+	t_entry	*begin_entries;
 
-	entries = begin_entries;
-	len = ft_countlst(begin_entries);
 	i = 0;
-	while (++i <= len)
-		if (entries->dir)
+	merge_sort(entries, &ft_order_byname);
+	if (CHECK_BIT(params, PARAM_T_POS))
+		merge_sort(entries, &ft_order_bytime);
+	begin_entries = *entries;
+	len = ft_countlst(*entries);
+	if ((*entries)->next)
+		while (i < len)
 		{
-			if (entries == begin_entries)
-			{
-				begin_entries = begin_entries->next;
-				entries_buf = begin_entries;
-			}
-			else
-			{
-				ft_lastentry(begin_entries, entries)->next = entries->next;
-				entries_buf = ft_lastentry(begin_entries, entries->next);
-			}
-			ft_lastentry(entries, NULL)->next = entries;
-			entries->next = NULL;
-			entries = entries_buf;
+			begin_entries = ft_sortentry_dir(begin_entries, entries);
+			i++;
 		}
-		else
-			entries = entries->next;
-	return (begin_entries);
+	*entries = begin_entries;
 }
 
 void			ft_sortpaths(char **paths)
