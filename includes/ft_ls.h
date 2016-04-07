@@ -6,7 +6,7 @@
 /*   By: rbaran <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/16 10:00:56 by rbaran            #+#    #+#             */
-/*   Updated: 2016/04/06 18:08:50 by rbaran           ###   ########.fr       */
+/*   Updated: 2016/04/07 22:19:53 by rbaran           ###   ########.fr       */
 /*   Updated: 2016/04/01 16:14:17 by rbaran           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
@@ -20,7 +20,6 @@
 # ifdef __APPLE__
 #  include <uuid/uuid.h>
 # endif
-# include <uuid/uuid.h>
 # include <errno.h>
 # include <sys/stat.h>
 # include <stdio.h>
@@ -75,6 +74,14 @@
 # define ISXOTH(MOD) (MOD & S_IXOTH)
 
 /*
+** Macro to get user/group name or user id
+*/
+# define ST_UID entry->stats.st_uid
+# define ST_GID entry->stats.st_gid
+# define GET_PWUID getpwuid(ST_UID)
+# define GET_GRGID getgrgid(ST_GID)
+
+/*
 ** Structure of files/directories to list
 */
 typedef struct	s_entry
@@ -124,6 +131,16 @@ char			*ft_strsj(char *path, char *name);
 void			merge_sort(t_entry **head_ref, int (*f)(t_entry*, t_entry*));
 t_entry			*ft_lastentry(t_entry *entries, t_entry *limit);
 size_t			*ft_countspace(t_entry *entries, int flag);
+void			ft_putspaces(size_t i, size_t spaces);
 size_t			ft_countnb(long int nb);
+
+/*
+** Write info (long format)
+*/
+void			ft_printtypeoffile(struct stat stats);
+void			ft_printpermissions(struct stat stats);
+void			ft_putsize(t_entry *entry, size_t spaces);
+void			ft_puttime(time_t *time);
+void			ft_putid(t_entry *entry, size_t *spaces);
 
 #endif

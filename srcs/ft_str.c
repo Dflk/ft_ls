@@ -6,7 +6,7 @@
 /*   By: rbaran <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/17 17:19:23 by rbaran            #+#    #+#             */
-/*   Updated: 2016/04/01 14:11:20 by rbaran           ###   ########.fr       */
+/*   Updated: 2016/04/07 22:32:22 by rbaran           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,4 +31,10 @@ char	*ft_strsj(char *path, char *name)
 			free(str);
 	}
 	return (path);
+}
+
+void	ft_putspaces(size_t i, size_t spaces)
+{
+	while (i++ < spaces)
+		ft_putchar(' ');
 }
