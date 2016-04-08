@@ -6,7 +6,7 @@
 /*   By: rbaran <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/17 17:19:23 by rbaran            #+#    #+#             */
-/*   Updated: 2016/04/07 22:32:22 by rbaran           ###   ########.fr       */
+/*   Updated: 2016/04/08 12:57:10 by rbaran           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,4 +37,10 @@ void	ft_putspaces(size_t i, size_t spaces)
 {
 	while (i++ < spaces)
 		ft_putchar(' ');
+}
+
+void	ft_putpath(char *path)
+{
+	ft_putstr(path);
+	ft_putstr(":\n");
 }

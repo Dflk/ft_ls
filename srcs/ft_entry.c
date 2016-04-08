@@ -6,7 +6,7 @@
 /*   By: rbaran <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/17 13:56:08 by rbaran            #+#    #+#             */
-/*   Updated: 2016/04/06 18:06:23 by rbaran           ###   ########.fr       */
+/*   Updated: 2016/04/08 11:21:55 by rbaran           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,10 @@ static t_entry	*ft_addentry(char *path, unsigned char params)
 		if (lstat(path, &(entry->stats)) == -1)
 			entry->error = errno;
 		entry->path = path;
-		entry->name = path;
+		if (ft_strrchr(path, '/'))
+			entry->name = ft_strrchr(path, '/') + 1;
+		else
+			entry->name = path;
 		entry->files = NULL;
 		entry->dir = 0;
 		if (errno == 0 && S_ISDIR(entry->stats.st_mode))

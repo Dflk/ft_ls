@@ -1,26 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   ft_free.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rbaran <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/03/16 12:01:40 by rbaran            #+#    #+#             */
-/*   Updated: 2016/04/08 09:30:24 by rbaran           ###   ########.fr       */
+/*   Created: 2016/04/08 15:13:27 by rbaran            #+#    #+#             */
+/*   Updated: 2016/04/08 15:20:24 by rbaran           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <ft_ls.h>
 
-int		main(int argc, char **argv)
+t_entry	*ft_free(t_entry *entry)
 {
-	unsigned char	params;
-	char			**paths;
+	t_entry	*entry_buf;
 
-	params = 0;
-	if (argc > 1)
-		params = ft_parseparams(argc, argv);
-	paths = ft_parseargs(argc, argv);
-	ft_ls(paths, params);
-	return (0);
+
+	entry_buf = entry->next;
+	return (entry_buf);
 }
