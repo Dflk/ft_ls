@@ -6,7 +6,7 @@
 /*   By: rbaran <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/17 11:28:39 by rbaran            #+#    #+#             */
-/*   Updated: 2016/04/08 15:20:18 by rbaran           ###   ########.fr       */
+/*   Updated: 2016/04/08 16:00:14 by rbaran           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,25 +57,25 @@ static void			ft_printfile(t_entry *entry, unsigned char params,
 	}
 }
 
-static void			ft_printls_r(t_entry *entries, unsigned char params)
+static void			ft_printls_r(t_entry **entries, unsigned char params)
 {
 	char	*path[2];
 
-	while (entries)
+	while (*entries)
 	{
-		if (ft_strcmp(entries->name, ".")
-				&& ft_strcmp(entries->name, "..")
-				&& S_ISDIR(entries->stats.st_mode))
+		if (ft_strcmp((*entries)->name, ".")
+				&& ft_strcmp((*entries)->name, "..")
+				&& S_ISDIR((*entries)->stats.st_mode))
 			if (CHECK_BIT(params, PARAM_A_POS) ||
-					(entries->name[0] != '.'))
+					((*entries)->name[0] != '.'))
 			{
-				path[0] = entries->path;
+				path[0] = (*entries)->path;
 				path[1] = NULL;
 				ft_putchar('\n');
 				ft_putpath(path[0]);
 				ft_ls(path, params);
 			}
-		entries = ft_free();
+		*entries = ft_free(entries, 0);
 	}
 }
 
@@ -97,13 +97,13 @@ void				ft_ls(char **paths, unsigned char opt)
 					ft_putpath(entries->path);
 				ft_printlst(entries, opt, ft_countspace(entries->files, SET, 1));
 				if (CHECK_BIT(opt, PARAM_R_MAX_POS))
-					ft_printls_r(entries->files, opt);
+					ft_printls_r(&(entries->files), opt);
 				if (entries->next)
 					ft_putchar('\n');
 			}
 			else
 				ft_printfile(entries, opt, ft_countspace(NULL, 2, 0));
-			entries = ft_free(entries);
+			entries = ft_free(&entries, 1);
 		}
 	}
 }

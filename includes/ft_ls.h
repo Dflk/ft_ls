@@ -6,7 +6,7 @@
 /*   By: rbaran <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/16 10:00:56 by rbaran            #+#    #+#             */
-/*   Updated: 2016/04/08 13:55:05 by rbaran           ###   ########.fr       */
+/*   Updated: 2016/04/08 15:59:05 by rbaran           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,6 +130,7 @@ void			merge_sort(t_entry **head_ref, int (*f)(t_entry*, t_entry*));
 t_entry			*ft_lastentry(t_entry *entries, t_entry *limit);
 size_t			*ft_countspace(t_entry *entries, int flag, int flag_type);
 size_t			ft_countnb(long int nb);
+t_entry			*ft_free(t_entry **entry, int flag);
 
 /*
 ** Write info (long format)
