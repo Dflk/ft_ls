@@ -6,7 +6,7 @@
 /*   By: rbaran <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/29 11:48:40 by rbaran            #+#    #+#             */
-/*   Updated: 2016/03/29 15:47:16 by rbaran           ###   ########.fr       */
+/*   Updated: 2016/04/08 17:04:23 by rbaran           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 
 void	ft_puttotal(t_entry *entries)
 {
-	struct stat		stats;
 	unsigned int	blocks;
 	char			*path;
 
@@ -24,12 +23,11 @@ void	ft_puttotal(t_entry *entries)
 		path = entries->path;
 		while (entries && entries->path == path)
 		{
-			stat(entries->path, &stats);
-			blocks += stats.st_blocks;
+			blocks += entries->stats.st_blocks;
 			entries = entries->next;
 		}
 		ft_putstr("total ");
-		ft_putnbr((int)blocks);
+		ft_putnbr(blocks);
 		ft_putchar('\n');
 	}
 }

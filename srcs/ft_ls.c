@@ -6,7 +6,7 @@
 /*   By: rbaran <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/17 11:28:39 by rbaran            #+#    #+#             */
-/*   Updated: 2016/04/08 16:00:14 by rbaran           ###   ########.fr       */
+/*   Updated: 2016/04/08 18:27:22 by rbaran           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,8 @@ static void			ft_printlst(t_entry *entries, unsigned char params,
 	t_entry *entry;
 
 	entry = entries->files;
+	if (CHECK_BIT(params, PARAM_L_POS))
+		ft_puttotal
 	while (entry)
 	{
 		if ((CHECK_BIT(params, PARAM_A_POS) && entry->name[0] == '.') ||
